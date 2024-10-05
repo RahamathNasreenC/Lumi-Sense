@@ -1,12 +1,12 @@
-// Define pin for the IR sensor
-const int irSensorPin = 2;  // IR sensor output pin connected to pin 2
-const int ledPin = 13;      // Optional: LED connected to pin 13
+// Define the pins
+const int soundSensorPin = A0;  // Sound sensor connected to analog pin A0
+const int ledPin = 13;          // Optional: LED connected to digital pin 13
+
+// Threshold for sound detection (adjust based on your sensor sensitivity)
+int soundThreshold = 500;
 
 void setup() {
-  // Set up the IR sensor pin as an input
-  pinMode(irSensorPin, INPUT);
-  
-  // Optional: Set up the LED pin as an output
+  // Initialize the LED pin as an output
   pinMode(ledPin, OUTPUT);
   
   // Start serial communication for debugging
@@ -14,19 +14,21 @@ void setup() {
 }
 
 void loop() {
-  // Read the state of the IR sensor
-  int sensorValue = digitalRead(irSensorPin);
+  // Read the analog value from the sound sensor
+  int soundValue = analogRead(soundSensorPin);
   
-  // If the sensor detects an object
-  if (sensorValue == LOW) {  // Change to HIGH if your sensor uses high logic when detecting
-    Serial.println("Object detected!");
+  // Print the sound sensor value to the serial monitor
+  Serial.print("Sound level: ");
+  Serial.println(soundValue);
+  
+  // If the sound level exceeds the threshold
+  if (soundValue > soundThreshold) {
+    Serial.println("Sound detected!");
     
-    // Optional: Turn the LED on
+    // Optional: Turn on the LED
     digitalWrite(ledPin, HIGH);
   } else {
-    Serial.println("No object detected.");
-    
-    // Optional: Turn the LED off
+    // Optional: Turn off the LED
     digitalWrite(ledPin, LOW);
   }
   
