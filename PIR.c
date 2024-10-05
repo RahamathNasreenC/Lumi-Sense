@@ -1,23 +1,35 @@
-// Define the pins for PIR sensor and LED
-int pirPin = 2;  // PIR sensor connected to digital pin 2
-int ledPin = 13; // LED connected to digital pin 13
+// Define pin for the IR sensor
+const int irSensorPin = 2;  // IR sensor output pin connected to pin 2
+const int ledPin = 13;      // Optional: LED connected to pin 13
 
 void setup() {
-  pinMode(pirPin, INPUT);  // Set PIR pin as input
-  pinMode(ledPin, OUTPUT); // Set LED pin as output
-  Serial.begin(9600);      // Initialize serial communication for debugging
+  // Set up the IR sensor pin as an input
+  pinMode(irSensorPin, INPUT);
+  
+  // Optional: Set up the LED pin as an output
+  pinMode(ledPin, OUTPUT);
+  
+  // Start serial communication for debugging
+  Serial.begin(9600);
 }
 
 void loop() {
-  int pirState = digitalRead(pirPin); // Read PIR sensor output
+  // Read the state of the IR sensor
+  int sensorValue = digitalRead(irSensorPin);
   
-  if (pirState == HIGH) {            // If motion is detected
-    digitalWrite(ledPin, HIGH);      // Turn on LED
-    Serial.println("Motion Detected!");
+  // If the sensor detects an object
+  if (sensorValue == LOW) {  // Change to HIGH if your sensor uses high logic when detecting
+    Serial.println("Object detected!");
+    
+    // Optional: Turn the LED on
+    digitalWrite(ledPin, HIGH);
   } else {
-    digitalWrite(ledPin, LOW);       // Turn off LED
-    Serial.println("No motion");
+    Serial.println("No object detected.");
+    
+    // Optional: Turn the LED off
+    digitalWrite(ledPin, LOW);
   }
   
-  delay(500); // Delay for half a second to avoid rapid toggling
+  // Small delay to avoid flooding the serial monitor
+  delay(200);
 }
